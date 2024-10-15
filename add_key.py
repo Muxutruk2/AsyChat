@@ -1,8 +1,11 @@
 import requests
 import encryption
 from cryptography.hazmat.backends import default_backend
+import sys
 
-key_holder_ip = input("Enter the client's ip: ")
+key_holder_ip = sys.argv[1] 
+if key_holder_ip is None:
+    print("Usage: python3 add_key.py [IP]")
 
 request = requests.get(f'http://{key_holder_ip}:5000/public_key')
 if request.status_code != 200:
