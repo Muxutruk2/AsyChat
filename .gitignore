@@ -6,6 +6,9 @@ chat_server.db
 keys/*.pem
 allowed_keys/*.pem
 
+client.log
+server.log
+
 *.swp          # Vim swap files
 .vscode/       # Visual Studio Code files
 

@@ -3,6 +3,7 @@ from flask import Flask, render_template, request, jsonify, redirect
 import requests
 from encryption import *
 from flask_cors import CORS
+import logging
 
 app = Flask(__name__)
 CORS(app)  
@@ -13,6 +14,12 @@ CLIENT_PUBLIC_KEY_PATH = 'client/keys/client_public_key.pem'
 
 server_ip = "localhost"
 
+logging.basicConfig(
+    filename='client.log',  # Log to a file named 'server.log'
+    level=logging.INFO,      # Log level
+    format='%(asctime)s - %(levelname)s - %(message)s'  # Log format
+)
+
 @app.route('/', methods=['GET'])
 def index(): 
     return render_template('connect.html')
@@ -20,12 +27,12 @@ def index():
 @app.route('/chat', methods=['GET'])
 def get_messages():
     # Request messages from the server
-    print(request.cookies)
+    logging.debug(request.cookies)
     server_ip = request.cookies.to_dict()['server']
     
     response = requests.get(f'http://{server_ip}:5001/messages')
     encrypted_messages = response.json().get('messages')
-    print("Client recieved encrypted_messages: ", encrypted_messages)
+    logging.debug("Client recieved encrypted_messages: ", encrypted_messages)
 
     # Decrypt messages
     client_private_key = load_private_key_file(CLIENT_PRIVATE_KEY_PATH)
@@ -34,7 +41,7 @@ def get_messages():
         for msg in encrypted_messages
     ]
 
-    print("Client recieved messages: ", decrypted_messages)
+    logging.debug("Client recieved messages: ", decrypted_messages)
 
     return render_template('chat.html', messages=decrypted_messages)
 
@@ -46,7 +53,7 @@ def send_message():
     message = data['message']
     server_ip = data['server']
 
-    print(f"{nickname=}\n{message=}")
+    logging.debug(f"{nickname=}\n{message=}")
     
 
     # Get server's public key
@@ -69,7 +76,7 @@ def send_message():
     return redirect('/') 
 @app.route('/public_key', methods=['GET'])
 def public_key():
-    print(f"Server [ {request.remote_addr} ] requested public key")
+    logging.debug(f"Server [ {request.remote_addr} ] requested public key")
     # Serve the client's public key
     with open(CLIENT_PUBLIC_KEY_PATH, 'r') as key_file:
         return jsonify({'public_key': key_file.read()}), 200
