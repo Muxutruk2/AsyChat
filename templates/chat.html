@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat Room</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .messages {
+            background-color: #f4f4f4;
+            padding: 20px;
+            max-height: 300px;
+            overflow-y: scroll;
+            margin-bottom: 20px;
+        }
+        .message {
+            padding: 5px 0;
+            border-bottom: 1px solid #ddd;
+        }
+        .message:last-child {
+            border-bottom: none;
+        }
+        .nickname {
+            font-weight: bold;
+            color: #4CAF50;
+        }
+    </style>
+    <script>
+        // Function to get cookie by name
+        function getCookie(name) {
+            const value = `; ${document.cookie}`;
+            const parts = value.split(`; ${name}=`);
+            if (parts.length === 2) return parts.pop().split(';').shift();
+        }
+
+        // Function to send message via POST request
+        function sendMessage() {
+            const message = document.getElementById('message').value;
+            const server = getCookie('server');
+            const nickname = getCookie('nickname');
+
+            // Send the message via POST request to the server
+            fetch(`http://localhost:5000/send_message`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    nickname: nickname,
+                    message: message,
+                    server: server
+                })
+            }).then(response => {
+                if (response.ok) {
+                    document.getElementById('message').value = ''; // Clear the input
+                    window.location.reload(); // Reload to update messages
+                }
+            });
+        }
+
+        // On page load, display the nickname
+        window.onload = function() {
+            const nickname = getCookie('nickname');
+            document.getElementById('nicknameDisplay').innerText = `Welcome, ${nickname}`;
+        }
+    </script>
+</head>
+<body>
+    <h1 id="nicknameDisplay">Welcome</h1>
+
+    <div class="messages">
+        {% if messages %}
+            {% for message in messages %}
+                <div class="message">
+                    <span>{{ message }}</span>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p>No messages yet.</p>
+        {% endif %}
+    </div>
+
+    <form onsubmit="sendMessage(); return false;">
+        <input type="text" id="message" placeholder="Type your message..." required>
+        <button type="submit">Send</button>
+    </form>
+</body>
+</html>

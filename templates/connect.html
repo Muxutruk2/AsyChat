@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connect to Chat Server</title>
+    <script>
+        // Function to set cookies
+        function setCookie(name, value, days) {
+            const date = new Date();
+            date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+            const expires = "expires=" + date.toUTCString();
+            document.cookie = name + "=" + value + ";" + expires + ";path=/";
+        }
+
+        // Function to get cookie by name
+        function getCookie(name) {
+            const value = `; ${document.cookie}`;
+            const parts = value.split(`; ${name}=`);
+            if (parts.length === 2) return parts.pop().split(';').shift();
+        }
+
+        // Submit form and save nickname and server in cookies
+        function connectToChat() {
+            const nickname = document.getElementById('nickname').value;
+            const server = document.getElementById('server').value;
+
+            // Store in cookies for 1 day
+            setCookie('nickname', nickname, 1);
+            setCookie('server', server, 1);
+
+            // Redirect to /chat
+            window.location.href = '/chat';
+        }
+    </script>
+</head>
+<body>
+    <h1>Connect to Chat</h1>
+    <form onsubmit="connectToChat(); return false;">
+        <label for="nickname">Nickname:</label>
+        <input type="text" id="nickname" required><br><br>
+
+        <label for="server">Server IP:</label>
+        <input type="text" id="server" required><br><br>
+
+        <button type="submit">Connect</button>
+    </form>
+</body>
+</html>
