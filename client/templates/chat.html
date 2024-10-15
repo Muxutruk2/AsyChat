@@ -1,33 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chat Room</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-        }
-        .messages {
-            background-color: #f4f4f4;
-            padding: 20px;
-            max-height: 300px;
-            overflow-y: scroll;
-            margin-bottom: 20px;
-        }
-        .message {
-            padding: 5px 0;
-            border-bottom: 1px solid #ddd;
-        }
-        .message:last-child {
-            border-bottom: none;
-        }
-        .nickname {
-            font-weight: bold;
-            color: #4CAF50;
-        }
-    </style>
     <script>
         // Function to get cookie by name
         function getCookie(name) {
@@ -62,30 +39,40 @@
         }
 
         // On page load, display the nickname
-        window.onload = function() {
+        window.onload = function () {
             const nickname = getCookie('nickname');
             document.getElementById('nicknameDisplay').innerText = `Welcome, ${nickname}`;
         }
     </script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css">
 </head>
-<body>
-    <h1 id="nicknameDisplay">Welcome</h1>
 
-    <div class="messages">
-        {% if messages %}
+<body class="content">
+    <div class="container section">
+        <h1 class="title" id="nicknameDisplay">Welcome</h1>
+
+        <div class="messages notification">
+            {% if messages %}
             {% for message in messages %}
-                <div class="message">
-                    <span>{{ message }}</span>
-                </div>
+            <div>
+                <span>{{ message }}</span>
+            </div>
             {% endfor %}
-        {% else %}
+            {% else %}
             <p>No messages yet.</p>
-        {% endif %}
-    </div>
+            {% endif %}
+        </div>
 
-    <form onsubmit="sendMessage(); return false;">
-        <input type="text" id="message" placeholder="Type your message..." required>
-        <button type="submit">Send</button>
-    </form>
+        <form onsubmit="sendMessage(); return false;" class="field has-addons">
+            <div class="control is-expanded">
+                <input class="input" type="text" id="message" placeholder="Type your message..." required>
+            </div>
+            <div class="control">
+                <button class="button is-primary" type="submit">Send</button>
+            </div>
+        </form>
+    </div>
 </body>
+
 </html>

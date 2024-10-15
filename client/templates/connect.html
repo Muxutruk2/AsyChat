@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -33,17 +34,34 @@
             window.location.href = '/chat';
         }
     </script>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css">
 </head>
+
 <body>
-    <h1>Connect to Chat</h1>
-    <form onsubmit="connectToChat(); return false;">
-        <label for="nickname">Nickname:</label>
-        <input type="text" id="nickname" required><br><br>
+    <div class="container section">
+        <h1 class="title">Connect to Chat</h1>
+        <form onsubmit="connectToChat(); return false;">
+            <div class="field">
+                <label class="label" for="nickname">Nickname:</label>
+                <div class="control">
+                    <input class="input" type="text" id="nickname" required>
+                </div>
+            </div>
 
-        <label for="server">Server IP:</label>
-        <input type="text" id="server" required><br><br>
+            <div class="field">
+                <label class="label" for="server">Server IP:</label>
+                <div class="control">
+                    <input class="input" type="text" id="server" required>
+                </div>
+            </div>
 
-        <button type="submit">Connect</button>
-    </form>
+            <div class="control">
+                <button class="button is-primary" type="submit">Connect</button>
+            </div>
+        </form>
+    </div>
 </body>
+
 </html>
