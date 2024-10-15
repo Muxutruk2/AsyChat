@@ -65,6 +65,7 @@ def send_message():
     return redirect('/') 
 @app.route('/public_key', methods=['GET'])
 def public_key():
+    print("Server [ {request.remote_addr} ] requested public key")
     # Serve the client's public key
     with open(CLIENT_PUBLIC_KEY_PATH, 'r') as key_file:
         return jsonify({'public_key': key_file.read()}), 200
