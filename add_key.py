@@ -27,7 +27,7 @@ key_hash = encryption.get_public_key_hash(key_pem)
 print(key_hash)
 print(key_hash.hex())
 
-with open(f'./allowed_keys/public_key_{key_hash.hex()[0:20]}', 'w') as f:
+with open(f'./allowed_keys/public_key_{key_hash.hex()[0:20]}.pem', 'w') as f:
     f.write(public_key)
 
 
