@@ -1,4 +1,2 @@
-- Make the first page a nickname and server selector
-- The messages should appear like a chat with a input and button below it. (JS)
 - Messages should be fetched ever 5-10 seconds.
 - Nickname and server should be stored in cookies with a way to automatically join it.

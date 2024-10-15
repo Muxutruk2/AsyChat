@@ -2,8 +2,10 @@
 from flask import Flask, render_template, request, jsonify, redirect
 import requests
 from encryption import *
+from flask_cors import CORS
 
 app = Flask(__name__)
+CORS(app)  
 
 # Paths to client's keys
 CLIENT_PRIVATE_KEY_PATH = './keys/client_private_key.pem'
@@ -11,17 +13,16 @@ CLIENT_PUBLIC_KEY_PATH = './keys/client_public_key.pem'
 
 server_ip = "localhost"
 
-@app.route('/')
-def index():
-    return render_template('index.html')
+@app.route('/', methods=['GET'])
+def index(): 
+    return render_template('connect.html')
 
-@app.route('/messages', methods=['GET'])
+@app.route('/chat', methods=['GET'])
 def get_messages():
     # Request messages from the server
     response = requests.get(f'http://{server_ip}:5001/messages')
     encrypted_messages = response.json().get('messages')
-
-
+    print("Client recieved encrypted_messages: ", encrypted_messages)
 
     # Decrypt messages
     client_private_key = load_private_key_file(CLIENT_PRIVATE_KEY_PATH)
@@ -30,14 +31,19 @@ def get_messages():
         for msg in encrypted_messages
     ]
 
-    print(decrypted_messages)
+    print("Client recieved messages: ", decrypted_messages)
 
-    return render_template('messages.html', messages=decrypted_messages)
+    return render_template('chat.html', messages=decrypted_messages)
+
 
 @app.route('/send_message', methods=['POST'])
 def send_message():
-    nickname = request.form.get('nickname')
-    message = request.form.get('message')
+    data = request.json
+    nickname = data['nickname'] 
+    message = data['message']
+    server_ip = data['server']
+
+    print(f"{nickname=}\n{message=}")
 
     # Get server's public key
     response = requests.get(f'http://{server_ip}:5001/public_key')

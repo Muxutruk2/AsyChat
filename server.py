@@ -7,9 +7,10 @@ from cryptography.hazmat.primitives import serialization
 from cryptography.hazmat.primitives import hashes
 from cryptography.hazmat.backends import default_backend
 import os
+from flask_cors import CORS
 
 app = Flask(__name__)
-
+CORS(app)  
 # Initialize the database
 init_db()
 
@@ -66,19 +67,31 @@ def public_key():
 def get_encrypted_messages():
     # Request client's public key
     client_ip = request.remote_addr
+    print(f"[ {client_ip} ] aksed for messages")
     client_public_key_url = f'http://{client_ip}:5000/public_key'
     
     response = requests.get(client_public_key_url)
+    print(f"[ {client_ip} ] Recieved client's public key with status code: {response.status_code}")
     client_public_key_str = response.json().get('public_key')
+    print(f"[ {client_ip} ] Recieved client's public key starts with {client_public_key_str[0:40]}")
     client_public_key_pem = load_public_key(client_public_key_str)
     client_public_key_hash = get_public_key_hash(client_public_key_pem)
+    print(f"[ {client_ip} ] Recieved client's public key's hash is {client_public_key_hash}")
+    client_public_key_pem = load_public_key(client_public_key_str)
 
     # Check if the client's public key is authorized
     if not is_key_allowed(client_public_key_hash):
+        print(f"[ {client_ip} ] Unauthorized client.")
         return jsonify({"error": "Unauthorized public key"}), 403
+
+    print(f"[ {client_ip} ] Client authorized.")
 
     # Encrypt messages with client's public key
     messages = get_messages()
+    if len(messages) > 0:
+        print(f"[ {client_ip} ] Sending {len(messages)} messages. First one: {messages[0]}")
+    else:
+        print(f"[ {client_ip} ] Sending 0 messages")
     encrypted_messages = [
         encrypt_message(f"{nickname}: {content}", client_public_key_pem).hex() 
         for nickname, content in messages
