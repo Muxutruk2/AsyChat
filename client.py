@@ -20,6 +20,9 @@ def index():
 @app.route('/chat', methods=['GET'])
 def get_messages():
     # Request messages from the server
+    print(request.cookies)
+    server_ip = request.cookies.to_dict()['server']
+    
     response = requests.get(f'http://{server_ip}:5001/messages')
     encrypted_messages = response.json().get('messages')
     print("Client recieved encrypted_messages: ", encrypted_messages)
@@ -44,6 +47,7 @@ def send_message():
     server_ip = data['server']
 
     print(f"{nickname=}\n{message=}")
+    
 
     # Get server's public key
     response = requests.get(f'http://{server_ip}:5001/public_key')
