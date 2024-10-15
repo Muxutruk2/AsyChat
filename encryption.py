@@ -1,6 +1,22 @@
 # encryption.py
 from cryptography.hazmat.primitives.asymmetric import rsa, padding
 from cryptography.hazmat.primitives import serialization, hashes
+from cryptography.hazmat.backends import default_backend
+
+def get_public_key_hash(public_key):
+    """Return the SHA-256 hash of a public key given as a PEM-encoded string."""
+    # Load the public key from the PEM string
+    
+    # Serialize the public key to PEM format
+    public_key_bytes = public_key.public_bytes(
+        encoding=serialization.Encoding.PEM,
+        format=serialization.PublicFormat.SubjectPublicKeyInfo
+    )
+    
+    # Create a SHA-256 hash of the serialized public key
+    digest = hashes.Hash(hashes.SHA256(), backend=default_backend())
+    digest.update(public_key_bytes)
+    return digest.finalize()  # Returns the hash as bytes
 
 # Function to generate a new key pair
 def generate_key_pair(private_key_path, public_key_path):
