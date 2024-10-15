@@ -9,4 +9,5 @@ allowed_keys/*.pem
 *.swp          # Vim swap files
 .vscode/       # Visual Studio Code files
 
+.venv
 
