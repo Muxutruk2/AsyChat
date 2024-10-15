@@ -8,8 +8,8 @@ app = Flask(__name__)
 CORS(app)  
 
 # Paths to client's keys
-CLIENT_PRIVATE_KEY_PATH = './keys/client_private_key.pem'
-CLIENT_PUBLIC_KEY_PATH = './keys/client_public_key.pem'
+CLIENT_PRIVATE_KEY_PATH = 'client/keys/client_private_key.pem'
+CLIENT_PUBLIC_KEY_PATH = 'client/keys/client_public_key.pem'
 
 server_ip = "localhost"
 

@@ -15,8 +15,8 @@ CORS(app)
 init_db()
 
 # Paths to server's keys
-SERVER_PRIVATE_KEY_PATH = './keys/server_private_key.pem'
-SERVER_PUBLIC_KEY_PATH = './keys/server_public_key.pem'
+SERVER_PRIVATE_KEY_PATH = 'server/keys/server_private_key.pem'
+SERVER_PUBLIC_KEY_PATH = 'server/keys/server_public_key.pem'
 
 
 def load_allowed_public_keys(directory):
