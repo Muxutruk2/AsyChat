@@ -38,8 +38,8 @@ allowed_public_keys = load_allowed_public_keys(allowed_keys_directory)
 
 def is_key_allowed(public_key):
     """Check if a public key is in the allowed keys."""
-    print(f"searching {public_key} in: ")
-    [print(f"\n\t{i}") for i in allowed_public_keys.values()]
+    print(f"searching {public_key.hex()} in: ")
+    [print(f"\n\t{i.hex()}") for i in allowed_public_keys.values()]
 
     return public_key in allowed_public_keys.values()
 
@@ -62,7 +62,7 @@ def get_encrypted_messages():
     print(f"[ {client_ip} ] Recieved client's public key starts with {client_public_key_str[0:40]}")
     client_public_key_pem = load_public_key(client_public_key_str)
     client_public_key_hash = get_public_key_hash(client_public_key_pem)
-    print(f"[ {client_ip} ] Recieved client's public key's hash is {client_public_key_hash}")
+    print(f"[ {client_ip} ] Recieved client's public key's hash is {client_public_key_hash.hex()}")
     client_public_key_pem = load_public_key(client_public_key_str)
 
     # Check if the client's public key is authorized
@@ -75,7 +75,7 @@ def get_encrypted_messages():
     # Encrypt messages with client's public key
     messages = get_messages()
     if len(messages) > 0:
-        print(f"[ {client_ip} ] Sending {len(messages)} messages. First one: {messages[0]}")
+        print(f"[ {client_ip} ] Sending {len(messages)} messages. Last one: {messages[-1]}")
     else:
         print(f"[ {client_ip} ] Sending 0 messages")
     encrypted_messages = [
