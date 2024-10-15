@@ -18,20 +18,6 @@ init_db()
 SERVER_PRIVATE_KEY_PATH = './keys/server_private_key.pem'
 SERVER_PUBLIC_KEY_PATH = './keys/server_public_key.pem'
 
-def get_public_key_hash(public_key):
-    """Return the SHA-256 hash of a public key given as a PEM-encoded string."""
-    # Load the public key from the PEM string
-    
-    # Serialize the public key to PEM format
-    public_key_bytes = public_key.public_bytes(
-        encoding=serialization.Encoding.PEM,
-        format=serialization.PublicFormat.SubjectPublicKeyInfo
-    )
-    
-    # Create a SHA-256 hash of the serialized public key
-    digest = hashes.Hash(hashes.SHA256(), backend=default_backend())
-    digest.update(public_key_bytes)
-    return digest.finalize()  # Returns the hash as bytes
 
 def load_allowed_public_keys(directory):
     """Load allowed public keys from the specified directory."""
