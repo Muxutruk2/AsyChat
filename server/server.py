@@ -3,9 +3,6 @@ from flask import Flask, request, jsonify
 import requests
 from database import init_db, store_message, get_messages
 from encryption import *
-from cryptography.hazmat.primitives import serialization
-from cryptography.hazmat.primitives import hashes
-from cryptography.hazmat.backends import default_backend
 import os
 from flask_cors import CORS
 
