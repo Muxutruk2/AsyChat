@@ -1,2 +1,3 @@
 - Messages should be fetched ever 5-10 seconds.
 - Nickname and server should be stored in cookies with a way to automatically join it.
+- Handle errors both client and server gracefully

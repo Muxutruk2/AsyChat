@@ -17,8 +17,7 @@ SERVER_PRIVATE_KEY_PATH = 'server/keys/server_private_key.pem'
 SERVER_PUBLIC_KEY_PATH = 'server/keys/server_public_key.pem'
 
 logging.basicConfig(
-    filename='server.log',  # Log to a file named 'server.log'
-    level=logging.INFO,      # Log level
+    level=logging.DEBUG,      # Log level
     format='%(asctime)s - %(levelname)s - %(message)s'  # Log format
 )
 
@@ -36,13 +35,13 @@ def load_allowed_public_keys(directory):
 
     return allowed_keys
 
-allowed_keys_directory = './allowed_keys'
+allowed_keys_directory = 'server/allowed_keys'
 allowed_public_keys = load_allowed_public_keys(allowed_keys_directory)
 
 def is_key_allowed(public_key):
     """Check if a public key is in the allowed keys."""
-    logging.debug(f"searching {public_key.hex()} in: ")
-    [logging.debug(f"\n\t{i.hex()}") for i in allowed_public_keys.values()]
+    formatted_allowed_keys =  '\n\t'.join([i.hex() for i in allowed_public_keys.values()])
+    logging.debug(f"searching {public_key.hex()} in: {formatted_allowed_keys}")
 
     return public_key in allowed_public_keys.values()
 

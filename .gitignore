@@ -3,8 +3,7 @@ __pycache__/
 
 chat_server.db
 
-keys/*.pem
-allowed_keys/*.pem
+server/allowed_keys/*.pem
 
 client.log
 server.log

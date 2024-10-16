@@ -15,7 +15,7 @@ CLIENT_PUBLIC_KEY_PATH = 'client/keys/client_public_key.pem'
 server_ip = "localhost"
 
 logging.basicConfig(
-    filename='client.log',  # Log to a file named 'server.log'
+
     level=logging.INFO,      # Log level
     format='%(asctime)s - %(levelname)s - %(message)s'  # Log format
 )
@@ -31,6 +31,9 @@ def get_messages():
     server_ip = request.cookies.to_dict()['server']
     
     response = requests.get(f'http://{server_ip}:5001/messages')
+    if response.status_code != 200:
+        logging.error(f"Server returned {response.status_code}")
+        return redirect('/'), response.status_code
     encrypted_messages = response.json().get('messages')
     logging.debug("Client recieved encrypted_messages: ", encrypted_messages)
 
@@ -49,6 +52,11 @@ def get_messages():
 @app.route('/send_message', methods=['POST'])
 def send_message():
     data = request.json
+    if data is None:
+        logging.warning(f"[ {request.remote_addr} ] sent invalid json to /send_message")
+        return redirect('/send_message'), 400
+    if "nickname" not in data or "message" not in data or "server" not in data:
+        logging.warning("[ {request.remote_addr} ] sent incomplete json to /send_message")
     nickname = data['nickname'] 
     message = data['message']
     server_ip = data['server']
