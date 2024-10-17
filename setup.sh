@@ -17,10 +17,6 @@ function confirm() {
     esac
 }
 
-# Clone the repository
-print_message "Cloning the AsyChat repository"
-git clone https://github.com/Muxutruk2/AsyChat && cd AsyChat || exit
-
 # Ask if the user wants to create and activate a virtual environment
 if confirm "Do you want to create a virtual environment?"; then
     print_message "Creating a virtual environment"
