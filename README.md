@@ -1,6 +1,6 @@
 # AsyChat
 
-![Asychat Logo and Text](media/AsychatLogo_text_back.png)
+![Asychat Logo and Text](/media/AsychatLogo_text_back.png)
 
 AsyChat is a web-based chat with assymetric encryption made for secure decentralized messaging. The client acts as a front-end to the server, which acts like an API.
 
