@@ -1,5 +1,5 @@
 # client.py
-from flask import Flask, render_template, request, jsonify, redirect
+from flask import Flask, render_template, request, jsonify, redirect, send_from_directory, url_for
 import requests
 from encryption import *
 from flask_cors import CORS
@@ -25,6 +25,10 @@ elif sys.argv[1] == '-vv':
 @app.route('/', methods=['GET'])
 def index(): 
     return render_template('connect.html')
+
+@app.route('/media/<path:filename>', methods=['GET'])
+def media(filename):
+    return send_from_directory('media', filename)
 
 @app.route('/chat', methods=['GET'])
 def get_messages():
