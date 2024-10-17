@@ -4,6 +4,7 @@ import requests
 from encryption import *
 from flask_cors import CORS
 import logging
+import sys
 
 app = Flask(__name__)
 CORS(app)  
@@ -14,11 +15,12 @@ CLIENT_PUBLIC_KEY_PATH = 'client/keys/client_public_key.pem'
 
 server_ip = "localhost"
 
-logging.basicConfig(
-
-    level=logging.INFO,      # Log level
-    format='%(asctime)s - %(levelname)s - %(message)s'  # Log format
-)
+if len(sys.argv) == 1:
+    app.logger.setLevel(30) # Warning
+elif sys.argv[1] == '-v':
+    app.logger.setLevel(20) # Info
+elif sys.argv[1] == '-vv':
+    app.logger.setLevel(10) # Debug
 
 @app.route('/', methods=['GET'])
 def index(): 
